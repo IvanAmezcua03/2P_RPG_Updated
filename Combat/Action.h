@@ -9,6 +9,8 @@
 
 using namespace std;
 
+const int DefenseSpeedPriority = 999;
+
 class Action {
 public:
     //velocidad de quien realiza la accion

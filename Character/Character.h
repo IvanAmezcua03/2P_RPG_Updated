@@ -16,6 +16,8 @@ protected:
     int defense;
     int speed;
     bool isPlayer;
+    int originalHealth;
+    bool isDefending;
 public:
     Character(char* _name, int _health, int _attack, int _defense, int _speed, bool _isPlayer);
 
@@ -34,6 +36,11 @@ public:
     bool getIsPlayer();
     int getSpeed();
     string toString();
+    int getOriginalHealth();
+    bool getIsDefending();
+    void originalDefense();
+    void moreStats();
+    void regenerate();
 };
 
 

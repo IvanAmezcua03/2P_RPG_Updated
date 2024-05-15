@@ -15,6 +15,7 @@ bool compareSpeed(Character *a, Character *b) {
 
 Combat::Combat(vector<Character *> _participants) {
     participants = std::move(_participants);
+    OGParticipants = participants;
     for(auto participant : participants) {
         if (participant->getIsPlayer()) {
             partyMembers.push_back((Player *) participant);
@@ -22,6 +23,9 @@ Combat::Combat(vector<Character *> _participants) {
             enemies.push_back((Enemy *) participant);
         }
     }
+}
+vector<Character*> Combat::getParticipants() {
+    return OGParticipants;
 }
 
 Combat::Combat(vector<Player*> _partyMembers, vector<Enemy*> _enemies) {
@@ -70,26 +74,54 @@ Character* Combat::getTarget(Character* attacker) {
     //TODO: Handle this exception
     return nullptr;
 }
+void Combat::regenerate() {
+    for(auto participant: participants) {
+        participant->regenerate();
+    }
+}
 
 void Combat::doCombat() {
-    cout<< "Inicio del combate" << endl;
-    combatPrep();
-    int round = 1;
-    //Este while representa las rondas del combate
-    while(enemies.size() > 0 && partyMembers.size() > 0) {
-        cout<<"Round " << round << endl;
-        vector<Character*>::iterator it = participants.begin();
-        registerActions(it);
-        executeActions(it);
+    while (true) {
+        cout << "Inicio del combate" << endl;
+        combatPrep();
+        int round = 1;
+        //Este while representa las rondas del combate
+        while (enemies.size() > 0 && partyMembers.size() > 0) {
+            cout << "Round " << round << endl;
+            vector<Character *>::iterator it = participants.begin();
+            registerActions(it);
+            executeActions(it);
 
-        round++;
-    }
+            round++;
+        }
 
-    if(enemies.empty()) {
-        cout << "You win!" << endl;
-    } else {
-        cout << "You lose!" << endl;
+        if (enemies.empty()) {
+            cout << "You win!" << endl;
+        } else {
+            cout << "You lose!" << endl;
 
+        }
+        cout<<"Do you want to continue playing? (y/n)"<<endl;
+        char answer;
+        cin>>answer;
+        if(answer == 'n'){
+            break;
+        }else {
+            participants.clear();
+
+            partyMembers.clear();
+            enemies.clear();
+
+            vector<Character *> OGParticipants = getParticipants();
+            for (auto participant: OGParticipants) {
+                addParticipant(participant);
+            }
+        }
+
+        regenerate();
+        for(auto enemy: enemies) {
+            enemy->strongerEnemies();
+        }
     }
 }
 

@@ -13,6 +13,7 @@
 class Combat {
 private:
     vector<Character*> participants;
+    vector<Character*> OGParticipants;
     vector<Player*> partyMembers;
     vector<Enemy*> enemies;
     priority_queue<Action> actionQueue;
@@ -24,11 +25,14 @@ private:
     Character* getTarget(Character* attacker);
 public:
     Combat(vector<Character*> _participants);
+
     Combat(vector<Player*> _partyMembers, vector<Enemy*> _enemies);
     Combat();
     void doCombat();
     void addParticipant(Character *participant);
     string toString();
+    vector<Character*> getParticipants();
+    void regenerate();
 };
 
 

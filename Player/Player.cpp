@@ -28,15 +28,24 @@ Player::Player(char* _name, int _health, int _attack, int _defense, int _speed, 
 
 void Player::doAttack(Character *target) {
     target->takeDamage(attack);
+    if (target->getHealth() <= 0) {
+        gainExperience(((Enemy*)target)->getExperience());
+    }
 }
 
 void Player::takeDamage(int damage) {
     int trueDamage = damage - defense;
+    if (trueDamage < 0) {
+        trueDamage = 0;
+    }
 
     health-= trueDamage;
+    if (health <= 0) {
+        health = 0;
+    }
 
     cout << name << " took " << trueDamage << " damage!" << endl;
-
+    cout << name << " has " << health << " health remaining!" << endl;
     if(health <= 0) {
         cout << name << " has been defeated!" << endl;
     }
@@ -44,6 +53,14 @@ void Player::takeDamage(int damage) {
 
 void Player::levelUp() {
     level++;
+    cout<<name<<" has leveled up to level "<<level<<endl;
+    int previousAttack = attack;
+    int previousDefense = defense;
+    int previousSpeed = speed;
+    moreStats();
+    cout<<"Attack: "<<previousAttack<<" -> "<<attack<<endl;
+    cout<<"Defense: "<<previousDefense<<" -> "<<defense<<endl;
+    cout<<"Speed: "<<previousSpeed<<" -> "<<speed<<endl;
 }
 
 void Player::gainExperience(int exp) {
@@ -70,8 +87,13 @@ Action Player::takeAction(vector<Enemy*> enemies) {
     int action = 0;
     cout << "Select an action: " << endl
     << "1. Attack" << endl
-    << "2. Save Player Progress"
+    << "2.  Defend" << endl
+    << "3. Save progress"
     << endl;
+
+if(getIsDefending()==true){
+    originalDefense();
+}
 
     //TODO: Validate input
     cin >> action;
@@ -88,9 +110,18 @@ Action Player::takeAction(vector<Enemy*> enemies) {
             currentAction.speed = getSpeed();
             break;
         case 2:
+            currentAction.target = this;
+            currentAction.action = [this](){
+                defend();
+            };
+            currentAction.speed = DefenseSpeedPriority;
+            break;
+
+        case 3:
             saveProgress();
             return takeAction(enemies);
             break;
+
         default:
             cout << "Invalid action" << endl;
             return takeAction(enemies);
@@ -99,6 +130,8 @@ Action Player::takeAction(vector<Enemy*> enemies) {
 
     return currentAction;
 }
+
+
 
 char* Player::serialize() {
     char* iterator = buffer;

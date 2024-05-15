@@ -12,7 +12,7 @@ Player* loadPlayerInfo() {
         return Player::unserialize(buffer);
     } catch(int error) {
         //Preguntar al usuario el nombre de jugador
-        return new Player("Otro Jugador", 7, 15, 7, 8);
+        return new Player("Otro Jugador", 40, 15, 7, 8);
     }
 }
 
@@ -20,8 +20,8 @@ int main() {
     Player *player = loadPlayerInfo();
     cout << player->getName() << endl;
     cout << player->toString() << endl;
-    Enemy *enemy = new Enemy("Goblin", 15, 6, 2, 5, 10);
-    Enemy *enemy2 = new Enemy("Orc", 15, 6, 2, 5, 10);
+    Enemy *enemy = new Enemy("Goblin", 15, 15, 2, 5, 100);
+    Enemy *enemy2 = new Enemy("Orc", 15, 15, 2, 5, 100);
 
     vector<Character*> participants;
 

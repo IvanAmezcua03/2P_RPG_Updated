@@ -3,6 +3,7 @@
 //
 
 #include "Character.h"
+#include <cstring>
 Character::Character(char* _name, int _health, int _attack, int _defense, int _speed, bool _isPlayer) {
     strcpy(name, _name);
     health = _health;
@@ -46,4 +47,34 @@ bool Character::flee(Character*target) {
 
     int chance = rand() % 100;
     return chance > 30;
+}
+
+int Character::getOriginalHealth() {
+    return originalHealth;
+}
+
+bool Character::getIsDefending() {
+    return isDefending;
+}
+
+void Character::defend() {
+    isDefending = true;
+    defense = defense * 1.5;
+}
+
+void Character::originalDefense() {
+    isDefending = false;
+    defense = defense / 1.5;
+}
+
+void Character::moreStats() {
+    attack = attack * 1.5;
+
+    defense = defense * 1.5;
+
+    speed = speed * 1.5;
+}
+
+void Character::regenerate() {
+    health = originalHealth;
 }

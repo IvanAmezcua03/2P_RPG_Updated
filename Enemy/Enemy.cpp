@@ -57,3 +57,10 @@ Action Enemy::takeAction(vector<Player*> partyMembers) {
 
     return currentAction;
 }
+
+void Enemy::strongerEnemies() {
+    attack += 5;
+    defense += 5;
+    speed += 5;
+    health += 10;
+}
