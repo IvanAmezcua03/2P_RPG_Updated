@@ -82,7 +82,7 @@ void Combat::regenerate() {
 
 void Combat::doCombat() {
     while (true) {
-        cout << "Inicio del combate" << endl;
+        cout << "The battle starts now!" << endl;
         combatPrep();
         int round = 1;
         //Este while representa las rondas del combate

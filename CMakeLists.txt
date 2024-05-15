@@ -17,4 +17,3 @@ add_executable(rpg main.cpp
         Combat/Action.h
         Files/FileHandler.cpp
         Files/FileHandler.h)
-git
